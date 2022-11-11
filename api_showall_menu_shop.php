@@ -9,27 +9,25 @@
     $conndb = $connectDB->getConnection();
             
     $menu = new Menu($conndb);
+    $data = json_decode(file_get_contents('php://input'));
+    $menu->shopId = $data->shopId;
     $stmt = $menu->showAllMenu();
 
-    $menu_arr = array();
-    while($rows = $stmt->fetch(PDO::FETCH_ASSOC)){
-        extract($rows);
-        $rows_arr = array(
+    $arr = array();  
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+        $menu_arr = array(
             'message' => '1',
-            'menuId' => $menuId,
-            'menuName' => $menuName,
-            'menuPrice' => $menuPrice,
-            'menuImg1' => $menuImg1,
-            'menuImg2' => $menuImg2,
-            'menuImg3' => $menuImg3,
-            'menuType' => $menuType,
-            'shopId_coffee_menu' => $shopId,
-            'shopId_shop_tb' => $shopId,
-            'shopName' => $shopName   
-        );
-        array_push($menu_arr , $rows_arr);
+            'menuName' => $row['menuName'],
+            'menuPrice' => $row['menuPrice'],
+            'menuImg1' => $row['menuImg1'],
+            'menuImg2' => $row['menuImg2'],
+            'menuImg3' => $row['menuImg3'],
+            'menuType' => $row['menuType'],
+            'shopId' => $row['shopId']
+        ); 
+        array_push($arr , $menu_arr);
     }
-    http_response_code(200);
-    echo json_encode($menu_arr);
 
+    http_response_code(200);
+    echo json_encode($arr);
 ?>

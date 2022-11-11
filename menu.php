@@ -184,8 +184,11 @@
     }
 
     public function showAllMenu(){
-        $strSql = 'SELECT coffee_menu_tb.menuId , coffee_menu_tb.menuName , coffee_menu_tb.menuPrice , coffee_menu_tb.menuImg1 , coffee_menu_tb.menuImg2 , coffee_menu_tb.menuImg3 , coffee_menu_tb.menuType , coffee_menu_tb.shopId , shop_tb.shopName , shop_tb.shopId FROM coffee_menu_tb INNER JOIN shop_tb ON coffee_menu_tb.shopId = shop_tb.shopId ORDER BY menuId ASC';
-        $stmt = $this->conndb->query($strSql);
+        $strSql = 'SELECT * FROM coffee_menu_tb WHERE shopId = ?';
+        $stmt = $this->conndb->prepare($strSql);
+        $this->shopId = intval(htmlspecialchars(strip_tags($this->shopId)));
+        $stmt->bindparam(1 , $this->shopId);
+        $stmt->execute();
         return $stmt;
     }
 }
