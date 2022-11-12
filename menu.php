@@ -163,6 +163,27 @@
             $stmt->bindparam(5 , $this->menuId);
         }
 
+        if(!empty($this->menuImg1 && $this->menuImg2 && $this->menuImg3)){
+            $strSql = 'UPDATE coffee_menu_tb SET menuName = ? , menuPrice = ? , menuImg1 = ? , menuImg2 = ? , menuImg3 = ? , menuType = ? , shopId = ? WHERE menuId = ?';
+            $stmt = $this->conndb->prepare($strSql);
+            $this->menuName = htmlspecialchars(strip_tags($this->menuName));
+            $this->menuPrice = doubleval(htmlspecialchars(strip_tags($this->menuPrice)));
+            $this->menuImg1 = htmlspecialchars(strip_tags($this->menuImg1));
+            $this->menuImg2 = htmlspecialchars(strip_tags($this->menuImg2));
+            $this->menuImg3 = htmlspecialchars(strip_tags($this->menuImg3));
+            $this->menuType = intval(htmlspecialchars(strip_tags($this->menuType)));
+            $this->shopId = intval(htmlspecialchars(strip_tags($this->shopId)));
+            $this->menuId = intval(htmlspecialchars(strip_tags($this->menuId)));
+            $stmt->bindparam(1 , $this->menuName);
+            $stmt->bindparam(2 , $this->menuPrice);
+            $stmt->bindparam(3 , $this->menuImg1);
+            $stmt->bindparam(4 , $this->menuImg2);
+            $stmt->bindparam(5 , $this->menuImg3);
+            $stmt->bindparam(6 , $this->menuType);
+            $stmt->bindparam(7 , $this->shopId);
+            $stmt->bindparam(8 , $this->menuId);
+        }
+
         if($stmt->execute()){
             return true;
         }else{
